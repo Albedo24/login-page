@@ -1,29 +1,33 @@
-import React from 'react'
-import { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 
 const Login = () => {
+  const userRef = useRef();
+  const errRef = useRef();
 
-    const userRef = useRef() 
-    const errRef = useRef()
-    
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');   
-    const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState('');
-    
-    useEffect(() => {
-        userRef.current.focus();
-    }, [])
+  const [user, setUser] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState("");
 
-    useEffect(() => {
-        setErrMsg('')
-    }, [user, pwd]);
+  useEffect(() => {
+    userRef.current.focus();
+  }, []);
 
-    return (
-        <section>
-           <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-        </section>
-  )
-}
+  useEffect(() => {
+    setErrMsg("");
+  }, [user, pwd]);
 
-export default Login
+  return (
+    <section>
+      <p
+        ref={errRef}
+        className={errMsg ? "errmsg" : "offscreen"}
+        aria-live="assertive"
+      >
+        {errMsg}
+      </p>
+    </section>
+  );
+};
+
+export default Login;
