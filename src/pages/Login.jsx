@@ -25,39 +25,41 @@ function LoginForm({ Login }) {
   const userRef = useRef();
   const errRef = useRef();
 
-  const details = { username: "aditimusunur", password: "Aditi@1234" };
+  // const details = { username: "aditimusunur", password: "Aditi@1234" };
 
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({ username: "", password: "" });
+  console.log("checking user state:\n", user);
   const [checker, setChecker] = useState(false);
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState("");
-
   const { setAuth } = useContext(AuthContext);
 
   // AXIOS DUMMY
-  let result = {
-    mesaage: "User signin Successfully",
-    checker: true,
-    user: {
-      id: 1,
-      name: "Aditi Musunur",
-      username: "aditimusunur",
-      password: "Aditi@1234",
-      email: "aditi02@gmail.com",
-      role: "admin",
-      options: [
-        "Add New Page",
-        "Add Content",
-        "Edit Content",
-        "Publish Content",
-        "Edit Site Design",
-        "Admin Settings",
-        "Settings",
-        "LogOut",
-      ],
-    },
-  };
+  // let result = {
+  //   mesaage: "User signin Successfully",
+  //   checker: true,
+  //   user: {
+  //     id: 1,
+  //     name: "Aditi Musunur",
+  //     username: "aditimusunur",
+  //     password: "Aditi@1234",
+  //     email: "aditi02@gmail.com",
+  //     role: "admin",
+  //     options: [
+  //       "Add New Page",
+  //       "Add Content",
+  //       "Edit Content",
+  //       "Publish Content",
+  //       "Edit Site Design",
+  //       "Admin Settings",
+  //       "Settings",
+  //       "LogOut",
+  //     ],
+  //   },
+  // };
+
+  let [apiUser, setApiUser] = useState({});
 
   // useEffect(() => {
   // 	userRef.current.focus();
@@ -70,18 +72,22 @@ function LoginForm({ Login }) {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("BUTTON CLICK");
+    console.log("BUTTON CLICK", user);
     await axios
-      .post("http://192.168.1.49:4000/login", details, {
-        headers: { "Content-Type": "application/json" },
+      .post("http://localhost:4000/login", user, {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
       })
       .then((result) => {
         console.log(result);
+        setApiUser(result.data);
         setChecker(true);
       })
       .catch((err) => {
         console.log(err + "CHINU SLEEP");
-        setChecker(true); // delete in prod
+        // setChecker(true); // delete in prod
       });
     // <Navbar role={result.user.role} />;
     // Login(details);
@@ -91,9 +97,9 @@ function LoginForm({ Login }) {
 
   return (
     <>
-      {console.log(result)}
+      {console.log(apiUser)}
       {checker ? (
-        <HomePage role={result.user.role} options={result.user.options} />
+        <HomePage role={apiUser.user.role} options={apiUser.user.options} />
       ) : (
         <Grid
           container
@@ -209,12 +215,14 @@ function LoginForm({ Login }) {
                       },
                     },
                   }}
-                  type="email"
-                  label="Email"
+                  type="text"
+                  label="Username"
                   ref={userRef}
                   autoComplete="off"
-                  onChange={(e) => setUser(e.target.value)}
-                  value={user}
+                  onChange={(e) =>
+                    setUser({ ...user, username: e.target.value })
+                  }
+                  value={user.username}
                   required
                 />
               </Grid>
@@ -242,8 +250,10 @@ function LoginForm({ Login }) {
                   }}
                   type="password"
                   label="Password"
-                  onChange={(e) => setPwd(e.target.value)}
-                  value={pwd}
+                  onChange={(e) =>
+                    setUser({ ...user, password: e.target.value })
+                  }
+                  value={user.password}
                   required
                 />
               </Grid>
