@@ -47,7 +47,7 @@
 
 .nav-text {
   text-decoration: none;
-  color: black;
+  /* color: black; */
   background-image: linear-gradient(
     to bottom right,
     #549fe6ef 50%,
@@ -69,7 +69,7 @@
 
 .nav-text:hover {
   background-position: 100% 0%;
-  border: 1px solid #36dae9;
+  border: 3px solid #36dae9;
 }
 
 .nav-menu-items {

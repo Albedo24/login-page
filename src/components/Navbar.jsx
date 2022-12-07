@@ -42,7 +42,7 @@ function Navbar({ role, options }) {
               </li>
             );
           })}
-          <li>42</li>
+          {/* <li>42</li> */}
         </ul>
       </nav>
     </>
